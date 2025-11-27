@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Новогодний кроссворд</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e6f7ff;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #d40000;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .grid {
+      display: inline-block;
+      border: 2px solid #333;
+      margin-bottom: 20px;
+    }
+    .row {
+      display: flex;
+    }
+    .cell {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      background-color: #fff;
+    }
+    .black {
+      background-color: #333;
+    }
+    .number {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 10px;
+      color: #000;
+    }
+    .cell { position: relative; }
+    .clues {
+      display: flex;
+      gap: 40px;
+    }
+    .clue-section {
+      flex: 1;
+    }
+    .clue-section h3 {
+      color: #d40000;
+      margin-bottom: 8px;
+    }
+    .clue {
+      margin-bottom: 5px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎄 Новогодний кроссворд 🎁</h1>
+
+    <!-- Кроссворд 12×12 -->
+    <div class="grid" id="crossword"></div>
+
+    <div class="clues">
+      <div class="clue-section">
+        <h3>По горизонтали:</h3>
+        <div class="clue"><b>1.</b> Главное новогоднее дерево</div>
+        <div class="clue"><b>3.</b> Игрушка, которая громко хлопает</div>
+        <div class="clue"><b>5.</b> Съедобный символ Нового года</div>
+        <div class="clue"><b>6.</b> Праздник 1 января (слитно)</div>
+        <div class="clue"><b>8.</b> То, что ждут все дети</div>
+        <div class="clue"><b>9.</b> Огонь, которым любуются на празднике (полное слово)</div>
+      </div>
+
+      <div class="clue-section">
+        <h3>По вертикали:</h3>
+        <div class="clue"><b>2.</b> Дедушка со сказочной бородой и посохом</div>
+        <div class="clue"><b>4.</b> Человек из снега</div>
+        <div class="clue"><b>7.</b> Транспорт Деда Мороза</div>
+        <div class="clue"><b>10.</b> Холодное время года</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Решите кроссворд и погрузитесь в новогоднее настроение! 🎅❄️</p>
+    </div>
+  </div>
+
+  <script>
+    // Сетка 12x12: '.' — пустая ячейка (для букв), '#' — чёрная ячейка
+    // Числа — номера вопросов (в ячейках, где начинается слово)
+    const gridData = [
+      //  0   1   2   3   4   5   6   7   8   9   10  11
+        ['1','.','.','.','.','#','.','.','.','.','.','.'], // 0 — ЁЛКА (4)
+        ['.','#','2','.','.','.','.','.','.','.','.','.'], // 1 — ДЕДМОРОЗ (8)
+        ['.','#','.','.','.','.','.','.','.','.','.','.'],
+        ['.','#','.','.','.','.','.','.','.','.','.','.'],
+        ['.','#','.','.','.','.','.','.','.','.','.','.'],
+        ['#','3','.','.','.','#','4','.','.','.','.','.'], // 2 — ХЛОПУШКА (8), 4 — СНЕГОВИК (9)
+        ['.','.','.','.','.','#','.','.','.','.','.','.'],
+        ['.','.','.','.','.','#','.','.','.','.','.','.'],
+        ['#','#','5','.','.','.','.','.','.','.','.','.'], // 5 — МАНДАРИН (9)
+        ['.','.','.','.','.','.','.','.','.','.','.','.'],
+        ['6','.','.','.','.','.','.','.','.','.','.','.'], // 6 — НОВЫЙГОД (9)
+        ['.','.','.','.','.','.','.','.','.','.','.','.'],
+    ];
+
+    // Ответы и их координаты (начало: [row, col], направление: 'h'/'v', слово)
+    const words = [
+      { start: [0,0], dir: 'h', word: "ЁЛКА", num: 1 },
+      { start: [0,2], dir: 'v', word: "ДЕДМОРОЗ", num: 2 },
+      { start: [5,1], dir: 'h', word: "ХЛОПУШКА", num: 3 },
+      { start: [5,6], dir: 'v', word: "СНЕГОВИК", num: 4 },
+      { start: [8,2], dir: 'h', word: "МАНДАРИН", num: 5 },
+      { start: [10,0], dir: 'h', word: "НОВЫЙГОД", num: 6 },
+      { start: [1,6], dir: 'v', word: "САНИ", num: 7 },       // САНИ — 4 буквы, вставим в [1,6]->[4,6]
+      { start: [2,10], dir: 'v', word: "ПОДАРОК", num: 8 },  // ПОДАРОК — 7 букв → [2,10]-[8,10]
+      { start: [0,11], dir: 'v', word: "БЕНГАЛЬСКИЙ", num: 9 }, // 11 букв → [0,11]-[10,11]
+      { start: [8,8], dir: 'v', word: "ЗИМА", num: 10 },     // ЗИМА — [8,8]-[11,8]
+    ];
+
+    // Вставляем буквы и номера в сетку
+    const filledGrid = gridData.map(row => row.map(cell => cell)); // копия
+
+    // Заполняем сетку буквами и номерами
+    words.forEach(w => {
+      const [r0, c0] = w.start;
+      const letters = w.word.split('');
+      for (let i = 0; i < letters.length; i++) {
+        let r = r0, c = c0;
+        if (w.dir === 'h') c += i;
+        else r += i;
+
+        // убедимся, что в пределах сетки
+        if (r < 0 || r >= filledGrid.length || c < 0 || c >= filledGrid[0].length) continue;
+
+        // Если текущая ячейка — '.' или уже содержит номер (например, '1'), заменяем на букву
+        if (filledGrid[r][c] === '.' || typeof filledGrid[r][c] === 'number' || /^\d+$/.test(filledGrid[r][c])) {
+          filledGrid[r][c] = letters[i];
+        }
+
+        // Ставим номер в начале слова (если не чёрная клетка)
+        if (i === 0) {
+          // Если там уже строка с буквой — оставим букву, но добавим номер отдельно при отрисовке
+          // Для простоты — запомним номер отдельно
+        }
+      }
+    });
+
+    // Структура для номеров в ячейках
+    const numbers = {};
+    words.forEach(w => {
+      const key = `${w.start[0]},${w.start[1]}`;
+      numbers[key] = w.num;
+    });
+
+    // Отрисовка сетки
+    const gridEl = document.getElementById('crossword');
+    gridEl.innerHTML = '';
+
+    for (let r = 0; r < filledGrid.length; r++) {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'row';
+      for (let c = 0; c < filledGrid[r].length; c++) {
+        const cellEl = document.createElement('div');
+        cellEl.className = 'cell';
+        const cell = filledGrid[r][c];
+
+        if (cell === '#') {
+          cellEl.classList.add('black');
+        } else {
+          // Если буква или пусто
+          if (cell !== '#') {
+            if (typeof cell === 'string' && cell.length === 1 && cell !== '.') {
+              cellEl.textContent = cell;
+            }
+            // Добавляем номер, если он есть
+            const key = `${r},${c}`;
+            if (numbers[key]) {
+              const numSpan = document.createElement('span');
+              numSpan.className = 'number';
+              numSpan.textContent = numbers[key];
+              cellEl.appendChild(numSpan);
+            }
+          }
+        }
+        rowEl.appendChild(cellEl);
+      }
+      gridEl.appendChild(rowEl);
+    }
+
+    // --- Дополнительно: можно добавить интерактивность (ввод букв), но по ТЗ — только графический вид.
+  </script>
+</body>
+</html>
