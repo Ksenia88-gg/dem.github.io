@@ -8,6 +8,79 @@
 </head>
   <body>
 
+    <h2> 13 апреля 2026 </h2>
+    <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стоматологическое отделение — Модели данных</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 30px; }
+        .file-list { list-style: none; padding: 0; }
+        .file-list li { margin: 15px 0; padding: 15px; background: #f8f9fa; border-left: 4px solid #3498db; border-radius: 4px; }
+        .file-list a { text-decoration: none; color: #2980b9; font-weight: bold; }
+        .file-list a:hover { color: #1a5276; text-decoration: underline; }
+        .badge { display: inline-block; padding: 3px 8px; background: #3498db; color: white; border-radius: 3px; font-size: 12px; margin-left: 10px; }
+        img { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; margin: 10px 0; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🦷 Модели данных: Стоматологическое отделение</h1>
+    <p><strong>Сущности:</strong> Врач, Медсестра, Операция</p>
+    
+    <h2>📁 Файлы проекта</h2>
+    <ul class="file-list">
+        <li>
+            <a href="01_Hierarchy.png" target="_blank">1. Общая иерархическая модель</a>
+            <span class="badge">PNG</span>
+            <p>Связи между сущностями: Врач → Операция, Медсестра → Врач</p>
+        </li>
+        <li>
+            <a href="02_Primary_Index_Doctor.png" target="_blank">2. Основной индекс: Врач</a>
+            <span class="badge">PNG</span>
+            <p>B-дерево по полю <code>ID_Врача (PK)</code> для запроса "показать все данные по сущности врач"</p>
+        </li>
+        <li>
+            <a href="03_Secondary_Indexes_Doctor.png" target="_blank">3. Вторичные индексы: Врач</a>
+            <span class="badge">PNG</span>
+            <p>Индексы по полям: <code>ФИО</code>, <code>Специализация</code>, <code>Стаж_лет</code></p>
+        </li>
+        <li>
+            <a href="04_Secondary_Indexes_Nurse.png" target="_blank">4. Вторичные индексы: Медсестра</a>
+            <span class="badge">PNG</span>
+            <p>Индексы по полям: <code>ФИО</code>, <code>Категория</code>, <code>Закрепленный_врач_ID</code></p>
+        </li>
+        <li>
+            <a href="05_Secondary_Indexes_Operation.png" target="_blank">5. Вторичные индексы: Операция</a>
+            <span class="badge">PNG</span>
+            <p>Индексы по полям: <code>Дата_проведения</code>, <code>Название_процедуры</code>, <code>Стоимость</code></p>
+        </li>
+        <li>
+            <a href="06_Create_Tables.sql" target="_blank">6. SQL-скрипт создания таблиц</a>
+            <span class="badge">SQL</span>
+            <p>DDL-команды для создания таблиц и индексов в СУБД</p>
+        </li>
+        <li>
+            <a href="07_Readme.txt" target="_blank">7. Описание проекта (Readme)</a>
+            <span class="badge">TXT</span>
+            <p>Информация об атрибутах сущностей и логике модели</p>
+        </li>
+    </ul>
+
+    <h2>ℹ️ О проекте</h2>
+    <p>Диаграммы созданы в <a href="https://draw.io" target="_blank">draw.io</a>.<br>
+    Для просмотра схем в исходном формате скачайте файлы <code>.drawio</code> и откройте их в приложении.</p>
+    
+    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #777; font-size: 14px;">
+        <p>🔗 Ссылка на репозиторий: <a href="https://github.com/Ksenia88-gg/dental-db-model" target="_blank">github.com/ВАШ_НИК/dental-db-model</a></p>
+    </footer>
+</body>
+</html>
+
     <h2> 25 марта 2026 </h2>
 
     <p>показатель точности модели по выдаче кредита: Точность: 0.690;
